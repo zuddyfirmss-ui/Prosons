@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Prosons CRM — Law Firm Automation</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%2064%2064%27%3E%3Crect%20x%3D%276%27%20y%3D%276%27%20width%3D%2752%27%20height%3D%2752%27%20rx%3D%2716%27%20fill%3D%27%25230B1120%27/%3E%3Cpath%20d%3D%27M18%2044V20h17.2c7.2%200%2011.8%203.9%2011.8%2010.1%200%206.4-4.8%2010.3-12%2010.3H27v3.6h-9Zm9-11.2h7.6c2.4%200%203.9-1.1%203.9-2.9s-1.5-2.8-3.9-2.8H27v5.7Z%27%20fill%3D%27%25230EA5E9%27/%3E%3Ccircle%20cx%3D%2746.5%27%20cy%3D%2717.5%27%20r%3D%273.5%27%20fill%3D%27%25237DD3FC%27/%3E%3C/svg%3E">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -60,18 +61,36 @@
   nav.scrolled { background: rgba(255,255,255,0.97); }
 
   .nav-logo {
-    display: flex; align-items: center; gap: 10px;
+    display: flex; align-items: center; gap: 11px;
     font-family: 'Space Grotesk', sans-serif;
-    font-weight: 700; font-size: 1.2rem;
     color: var(--text); text-decoration: none;
   }
   .logo-mark {
-    width: 34px; height: 34px; border-radius: 8px;
-    background: var(--blue);
-    display: flex; align-items: center; justify-content: center;
-    color: white; font-weight: 700; font-size: 0.9rem;
-    letter-spacing: -0.5px;
+    width: 42px; height: 42px; border-radius: 14px;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: radial-gradient(circle at 30% 20%, rgba(125,211,252,.28), transparent 32%), #0B1120;
+    box-shadow: 0 14px 30px rgba(2,132,199,.22), inset 0 0 0 1px rgba(255,255,255,.12);
+    flex-shrink: 0;
   }
+  .logo-mark svg { width: 100%; height: 100%; display: block; }
+  .brand-text { display: flex; align-items: baseline; gap: 6px; line-height: 1; }
+  .brand-word { font-weight: 800; font-size: 1.22rem; letter-spacing: -0.045em; }
+  .brand-sub {
+    font-size: .64rem; font-weight: 800; letter-spacing: .16em; text-transform: uppercase;
+    color: var(--blue-dark); padding: 4px 7px; border: 1px solid rgba(14,165,233,.18);
+    border-radius: 999px; background: rgba(14,165,233,.06);
+  }
+  .hero-brand-lockup {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 8px 16px 8px 10px; border-radius: 999px;
+    background: rgba(255,255,255,.76); border: 1px solid rgba(14,165,233,.18);
+    box-shadow: 0 18px 55px rgba(2,132,199,.12); backdrop-filter: blur(18px);
+    margin-bottom: 30px;
+  }
+  .hero-brand-lockup .logo-mark { width: 34px; height: 34px; border-radius: 11px; }
+  .hero-brand-copy { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.1; }
+  .hero-brand-name { font-family: 'Space Grotesk', sans-serif; font-weight: 800; color: var(--text); letter-spacing: -.035em; }
+  .hero-brand-line { font-size: .68rem; color: var(--blue-dark); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
 
   .nav-links {
     display: flex; align-items: center; gap: 32px;
@@ -608,10 +627,12 @@
   }
   .footer-brand p { font-size: 0.875rem; line-height: 1.7; margin-top: 16px; max-width: 280px; }
   .footer-logo {
-    display: flex; align-items: center; gap: 10px;
+    display: flex; align-items: center; gap: 11px;
     color: white; font-family: 'Space Grotesk', sans-serif;
     font-weight: 700; font-size: 1.1rem;
   }
+  .footer-logo .brand-sub { color: #7DD3FC; border-color: rgba(125,211,252,.22); background: rgba(14,165,233,.08); }
+  .footer-logo .logo-mark { box-shadow: 0 14px 34px rgba(14,165,233,.22), inset 0 0 0 1px rgba(255,255,255,.12); }
   .footer-col h4 {
     font-family: 'Space Grotesk', sans-serif;
     font-size: 0.8rem; font-weight: 700;
@@ -655,9 +676,21 @@
 
 <!-- NAV -->
 <nav id="navbar">
-  <a href="#" class="nav-logo">
-    <div class="logo-mark">P</div>
-    Prosons CRM
+  <a href="#" class="nav-logo" aria-label="Prosons CRM home">
+    <div class="logo-mark"><svg class="prosons-logo-svg" viewBox="0 0 64 64" aria-hidden="true">
+  <defs>
+    <linearGradient id="prosonsGrad1" x1="10" y1="8" x2="54" y2="58" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E0F2FE"/>
+      <stop offset="0.42" stop-color="#0EA5E9"/>
+      <stop offset="1" stop-color="#0284C7"/>
+    </linearGradient>
+  </defs>
+  <rect x="6" y="6" width="52" height="52" rx="16" fill="#0B1120"/>
+  <path d="M18 44V20h17.2c7.2 0 11.8 3.9 11.8 10.1 0 6.4-4.8 10.3-12 10.3H27v3.6h-9Zm9-11.2h7.6c2.4 0 3.9-1.1 3.9-2.9s-1.5-2.8-3.9-2.8H27v5.7Z" fill="url(#prosonsGrad1)"/>
+  <circle cx="46.5" cy="17.5" r="3.5" fill="#7DD3FC"/>
+  <path d="M45 21.5c-3.2 9.8-10.1 16.8-21 20.5" stroke="#7DD3FC" stroke-width="1.4" stroke-linecap="round" opacity="0.55"/>
+</svg></div>
+    <span class="brand-text"><span class="brand-word">Prosons</span><span class="brand-sub">CRM</span></span>
   </a>
   <ul class="nav-links">
     <li><a href="#features">Features</a></li>
@@ -677,9 +710,24 @@
   <canvas id="particles"></canvas>
   <div class="hero-glow"></div>
   <div class="hero-inner">
-    <div class="hero-badge">
-      <div class="hero-badge-dot"></div>
-      Built for modern law firms
+    <div class="hero-brand-lockup">
+      <div class="logo-mark"><svg class="prosons-logo-svg" viewBox="0 0 64 64" aria-hidden="true">
+  <defs>
+    <linearGradient id="prosonsGrad2" x1="10" y1="8" x2="54" y2="58" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E0F2FE"/>
+      <stop offset="0.42" stop-color="#0EA5E9"/>
+      <stop offset="1" stop-color="#0284C7"/>
+    </linearGradient>
+  </defs>
+  <rect x="6" y="6" width="52" height="52" rx="16" fill="#0B1120"/>
+  <path d="M18 44V20h17.2c7.2 0 11.8 3.9 11.8 10.1 0 6.4-4.8 10.3-12 10.3H27v3.6h-9Zm9-11.2h7.6c2.4 0 3.9-1.1 3.9-2.9s-1.5-2.8-3.9-2.8H27v5.7Z" fill="url(#prosonsGrad2)"/>
+  <circle cx="46.5" cy="17.5" r="3.5" fill="#7DD3FC"/>
+  <path d="M45 21.5c-3.2 9.8-10.1 16.8-21 20.5" stroke="#7DD3FC" stroke-width="1.4" stroke-linecap="round" opacity="0.55"/>
+</svg></div>
+      <div class="hero-brand-copy">
+        <span class="hero-brand-name">Prosons CRM</span>
+        <span class="hero-brand-line">Built for modern law firms</span>
+      </div>
     </div>
     <h1 class="display">
       Legal work,<br>
@@ -1063,8 +1111,20 @@
   <div class="footer-grid">
     <div class="footer-brand">
       <div class="footer-logo">
-        <div class="logo-mark">P</div>
-        Prosons CRM
+        <div class="logo-mark"><svg class="prosons-logo-svg" viewBox="0 0 64 64" aria-hidden="true">
+  <defs>
+    <linearGradient id="prosonsGrad3" x1="10" y1="8" x2="54" y2="58" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E0F2FE"/>
+      <stop offset="0.42" stop-color="#0EA5E9"/>
+      <stop offset="1" stop-color="#0284C7"/>
+    </linearGradient>
+  </defs>
+  <rect x="6" y="6" width="52" height="52" rx="16" fill="#0B1120"/>
+  <path d="M18 44V20h17.2c7.2 0 11.8 3.9 11.8 10.1 0 6.4-4.8 10.3-12 10.3H27v3.6h-9Zm9-11.2h7.6c2.4 0 3.9-1.1 3.9-2.9s-1.5-2.8-3.9-2.8H27v5.7Z" fill="url(#prosonsGrad3)"/>
+  <circle cx="46.5" cy="17.5" r="3.5" fill="#7DD3FC"/>
+  <path d="M45 21.5c-3.2 9.8-10.1 16.8-21 20.5" stroke="#7DD3FC" stroke-width="1.4" stroke-linecap="round" opacity="0.55"/>
+</svg></div>
+        <span class="brand-text"><span class="brand-word">Prosons</span><span class="brand-sub">CRM</span></span>
       </div>
       <p>Legal automation built for firms that want to scale without scaling their headcount. Trusted by 500+ law firms across Africa, the UK, and North America.</p>
     </div>
