@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prosons CRM — Law Firm Automation</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --blue: #0EA5E9;
+    --blue-dark: #0284C7;
+    --blue-glow: rgba(14, 165, 233, 0.15);
+    --blue-line: rgba(14, 165, 233, 0.25);
+    --ink: #0B1120;
+    --ink-soft: #1E2A3B;
+    --text: #0F172A;
+    --text-muted: #64748B;
+    --text-light: #94A3B8;
+    --surface: #F8FAFC;
+    --white: #FFFFFF;
+    --border: rgba(14, 165, 233, 0.12);
+    --grid: rgba(14, 165, 233, 0.04);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--white);
+    color: var(--text);
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+
+  /* TYPOGRAPHY */
+  .display { font-family: 'Space Grotesk', sans-serif; font-weight: 700; }
+  .heading { font-family: 'Space Grotesk', sans-serif; font-weight: 600; }
+
+  /* GRID BG */
+  .grid-bg {
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 5%;
+    height: 68px;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    transition: all 0.3s;
+  }
+  nav.scrolled { background: rgba(255,255,255,0.97); }
+
+  .nav-logo {
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700; font-size: 1.2rem;
+    color: var(--text); text-decoration: none;
+  }
+  .logo-mark {
+    width: 34px; height: 34px; border-radius: 8px;
+    background: var(--blue);
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-weight: 700; font-size: 0.9rem;
+    letter-spacing: -0.5px;
+  }
+
+  .nav-links {
+    display: flex; align-items: center; gap: 32px;
+    list-style: none;
+  }
+  .nav-links a {
+    color: var(--text-muted); text-decoration: none;
+    font-size: 0.875rem; font-weight: 500;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--blue); }
+
+  .nav-cta {
+    display: flex; gap: 12px; align-items: center;
+  }
+  .btn-ghost {
+    padding: 8px 20px; border-radius: 8px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text); font-size: 0.875rem; font-weight: 500;
+    cursor: pointer; text-decoration: none;
+    transition: all 0.2s;
+  }
+  .btn-ghost:hover { border-color: var(--blue); color: var(--blue); }
+
+  .btn-primary {
+    padding: 9px 22px; border-radius: 8px;
+    background: var(--blue);
+    color: white; font-size: 0.875rem; font-weight: 600;
+    cursor: pointer; text-decoration: none; border: none;
+    transition: all 0.2s;
+    box-shadow: 0 0 0 0 rgba(14,165,233,0);
+  }
+  .btn-primary:hover {
+    background: var(--blue-dark);
+    box-shadow: 0 4px 20px rgba(14,165,233,0.3);
+    transform: translateY(-1px);
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    padding: 100px 5% 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, #EFF6FF 0%, #F0F9FF 40%, #E0F2FE 70%, #F8FAFC 100%);
+  }
+
+  canvas#particles {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+  }
+
+  .hero-glow {
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(14,165,233,0.12) 0%, transparent 70%);
+    top: 50%; left: 50%; transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  .hero-inner {
+    position: relative; z-index: 2;
+    max-width: 900px; margin: 0 auto;
+    text-align: center;
+  }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 16px; border-radius: 100px;
+    background: rgba(14,165,233,0.08);
+    border: 1px solid rgba(14,165,233,0.2);
+    color: var(--blue-dark);
+    font-size: 0.8rem; font-weight: 600;
+    letter-spacing: 0.04em; text-transform: uppercase;
+    margin-bottom: 32px;
+  }
+  .hero-badge-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--blue);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.4); }
+  }
+
+  .hero h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(2.4rem, 5vw, 4.2rem);
+    font-weight: 700;
+    line-height: 1.12;
+    color: var(--text);
+    letter-spacing: -0.03em;
+    margin-bottom: 24px;
+  }
+
+  .hero h1 em {
+    font-style: normal;
+    background: linear-gradient(135deg, var(--blue) 0%, #38BDF8 50%, #7DD3FC 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-sub {
+    font-size: 1.15rem;
+    color: var(--text-muted);
+    max-width: 600px; margin: 0 auto 40px;
+    line-height: 1.7;
+  }
+
+  .hero-actions {
+    display: flex; align-items: center; justify-content: center;
+    gap: 16px; flex-wrap: wrap;
+  }
+
+  .btn-hero {
+    padding: 14px 32px; border-radius: 10px;
+    background: var(--blue);
+    color: white; font-size: 1rem; font-weight: 600;
+    cursor: pointer; text-decoration: none; border: none;
+    transition: all 0.25s;
+    box-shadow: 0 8px 32px rgba(14,165,233,0.3);
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .btn-hero:hover {
+    background: var(--blue-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(14,165,233,0.4);
+  }
+
+  .btn-hero-outline {
+    padding: 14px 32px; border-radius: 10px;
+    background: transparent;
+    border: 1.5px solid rgba(14,165,233,0.3);
+    color: var(--text); font-size: 1rem; font-weight: 600;
+    cursor: pointer; text-decoration: none;
+    transition: all 0.25s;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .btn-hero-outline:hover { border-color: var(--blue); color: var(--blue); }
+
+  .hero-stats {
+    display: flex; align-items: center; justify-content: center;
+    gap: 48px; margin-top: 60px;
+    flex-wrap: wrap;
+  }
+  .stat-item { text-align: center; }
+  .stat-num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.8rem; font-weight: 700;
+    color: var(--text); letter-spacing: -0.03em;
+    line-height: 1;
+  }
+  .stat-num span { color: var(--blue); }
+  .stat-label { font-size: 0.8rem; color: var(--text-light); font-weight: 500; margin-top: 4px; }
+  .stat-divider { width: 1px; height: 40px; background: var(--border); }
+
+  /* TRUST BAR */
+  .trust-bar {
+    padding: 24px 5%;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    overflow: hidden;
+  }
+  .trust-bar-inner {
+    display: flex; align-items: center; justify-content: center;
+    gap: 12px;
+  }
+  .trust-label { font-size: 0.8rem; color: var(--text-light); font-weight: 500; white-space: nowrap; }
+  .trust-firms {
+    display: flex; gap: 32px; align-items: center; flex-wrap: wrap; justify-content: center;
+  }
+  .firm-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.9rem; font-weight: 600;
+    color: var(--text-muted); letter-spacing: 0.02em;
+    opacity: 0.65;
+    transition: opacity 0.2s;
+  }
+  .firm-name:hover { opacity: 1; }
+
+  /* SECTION COMMONS */
+  section { padding: 96px 5%; }
+  .section-label {
+    display: inline-block;
+    font-size: 0.72rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--blue); margin-bottom: 16px;
+  }
+  .section-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(1.8rem, 3vw, 2.8rem);
+    font-weight: 700; letter-spacing: -0.025em;
+    color: var(--text); line-height: 1.2;
+    margin-bottom: 16px;
+  }
+  .section-sub {
+    font-size: 1.05rem; color: var(--text-muted);
+    max-width: 560px; line-height: 1.7;
+  }
+
+  /* FEATURES GRID */
+  .features { background: var(--white); }
+  .features-header { max-width: 600px; margin-bottom: 64px; }
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+  }
+  .feature-card {
+    padding: 32px;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    background: var(--white);
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .feature-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--blue), transparent);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .feature-card:hover {
+    border-color: rgba(14,165,233,0.3);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(14,165,233,0.08);
+  }
+  .feature-card:hover::before { opacity: 1; }
+
+  .feature-icon {
+    width: 48px; height: 48px; border-radius: 12px;
+    background: rgba(14,165,233,0.08);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 20px;
+  }
+  .feature-icon svg { width: 24px; height: 24px; stroke: var(--blue); fill: none; stroke-width: 1.8; }
+
+  .feature-card h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.05rem; font-weight: 600;
+    color: var(--text); margin-bottom: 10px;
+  }
+  .feature-card p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.65; }
+
+  .feature-tag {
+    display: inline-block; margin-top: 16px;
+    padding: 4px 12px; border-radius: 100px;
+    background: rgba(14,165,233,0.06);
+    color: var(--blue-dark); font-size: 0.75rem; font-weight: 600;
+    border: 1px solid rgba(14,165,233,0.15);
+  }
+
+  /* WORKFLOW / HOW IT WORKS */
+  .workflow {
+    background: var(--ink);
+    color: white;
+    position: relative; overflow: hidden;
+  }
+  .workflow .grid-bg {
+    background-image:
+      linear-gradient(rgba(14,165,233,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(14,165,233,0.06) 1px, transparent 1px);
+    background-size: 60px 60px;
+    position: absolute; inset: 0; pointer-events: none;
+  }
+  .workflow-inner { position: relative; z-index: 1; }
+  .workflow .section-title { color: white; }
+  .workflow .section-sub { color: rgba(255,255,255,0.55); }
+  .workflow .section-label { color: #38BDF8; }
+
+  .steps-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2px; margin-top: 64px;
+    border: 1px solid rgba(14,165,233,0.15);
+    border-radius: 20px; overflow: hidden;
+  }
+  .step {
+    padding: 40px 32px;
+    background: rgba(255,255,255,0.025);
+    border-right: 1px solid rgba(14,165,233,0.12);
+    position: relative;
+    transition: background 0.3s;
+  }
+  .step:last-child { border-right: none; }
+  .step:hover { background: rgba(14,165,233,0.06); }
+
+  .step-num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 3rem; font-weight: 700;
+    color: rgba(14,165,233,0.15);
+    line-height: 1; margin-bottom: 20px;
+    letter-spacing: -0.05em;
+  }
+  .step h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1rem; font-weight: 600;
+    color: white; margin-bottom: 10px;
+  }
+  .step p { font-size: 0.875rem; color: rgba(255,255,255,0.5); line-height: 1.65; }
+
+  /* MODULES BENTO */
+  .modules { background: var(--surface); }
+  .bento {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto;
+    gap: 16px;
+    margin-top: 64px;
+  }
+  .bento-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 20px; padding: 36px;
+    transition: all 0.3s;
+    overflow: hidden; position: relative;
+  }
+  .bento-card:hover {
+    border-color: rgba(14,165,233,0.25);
+    box-shadow: 0 8px 32px rgba(14,165,233,0.06);
+  }
+  .bento-card.tall { grid-row: span 2; }
+  .bento-card.wide { grid-column: span 2; }
+  .bento-card.feature-accent {
+    background: linear-gradient(135deg, #0EA5E9 0%, #0284C7 100%);
+    border-color: transparent;
+  }
+  .bento-card.feature-accent h3,
+  .bento-card.feature-accent p,
+  .bento-card.feature-accent .bento-label { color: white; }
+  .bento-card.feature-accent .bento-label { color: rgba(255,255,255,0.7); }
+
+  .bento-label {
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--blue);
+    margin-bottom: 12px;
+  }
+  .bento-card h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.1rem; font-weight: 600;
+    color: var(--text); margin-bottom: 10px;
+  }
+  .bento-card p { font-size: 0.875rem; color: var(--text-muted); line-height: 1.65; }
+
+  .bento-visual {
+    margin-top: 24px;
+    border-radius: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  /* Mini UI elements inside bento */
+  .mini-doc {
+    padding: 16px;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .mini-line {
+    height: 8px; border-radius: 4px;
+    background: linear-gradient(90deg, rgba(14,165,233,0.15), rgba(14,165,233,0.05));
+  }
+  .mini-line.short { width: 60%; }
+  .mini-line.med { width: 80%; }
+  .mini-line.full { width: 100%; }
+  .mini-line.highlight { background: rgba(14,165,233,0.4); }
+
+  .mini-status {
+    display: flex; gap: 6px; align-items: center;
+    padding: 8px 12px;
+    background: rgba(14,165,233,0.06);
+    border-radius: 8px; margin-top: 8px;
+  }
+  .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #22D3EE; }
+  .status-text { font-size: 0.75rem; color: var(--blue-dark); font-weight: 500; }
+
+  .mini-metric {
+    display: flex; justify-content: space-between;
+    align-items: center; padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .mini-metric:last-child { border: none; }
+  .metric-name { font-size: 0.78rem; color: var(--text-muted); }
+  .metric-val { font-size: 0.85rem; font-weight: 600; color: var(--text); font-family: 'Space Grotesk', sans-serif; }
+
+  /* PRICING */
+  .pricing { background: var(--white); }
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px; margin-top: 64px;
+  }
+  .price-card {
+    padding: 36px;
+    border: 1px solid var(--border);
+    border-radius: 20px; background: var(--white);
+    position: relative; transition: all 0.3s;
+  }
+  .price-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(14,165,233,0.08); }
+  .price-card.popular {
+    border: 2px solid var(--blue);
+    box-shadow: 0 0 0 4px rgba(14,165,233,0.08);
+  }
+  .popular-badge {
+    position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+    padding: 5px 16px; border-radius: 100px;
+    background: var(--blue); color: white;
+    font-size: 0.75rem; font-weight: 700; white-space: nowrap;
+    letter-spacing: 0.03em;
+  }
+  .price-tier {
+    font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--blue);
+    margin-bottom: 16px;
+  }
+  .price-amount {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 2.8rem; font-weight: 700;
+    color: var(--text); letter-spacing: -0.03em;
+    line-height: 1; margin-bottom: 4px;
+  }
+  .price-amount sup { font-size: 1.2rem; vertical-align: top; margin-top: 8px; }
+  .price-period { font-size: 0.85rem; color: var(--text-light); margin-bottom: 24px; }
+  .price-desc { font-size: 0.875rem; color: var(--text-muted); margin-bottom: 28px; line-height: 1.6; }
+  .price-divider { height: 1px; background: var(--border); margin-bottom: 24px; }
+  .price-features { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  .price-features li {
+    display: flex; align-items: flex-start; gap: 10px;
+    font-size: 0.875rem; color: var(--text-muted);
+  }
+  .check-icon { width: 16px; height: 16px; flex-shrink: 0; margin-top: 1px; }
+  .price-cta {
+    display: block; width: 100%; margin-top: 32px;
+    padding: 13px; border-radius: 10px; text-align: center;
+    font-weight: 600; font-size: 0.9rem; cursor: pointer;
+    text-decoration: none; transition: all 0.25s;
+  }
+  .price-cta.outline {
+    border: 1.5px solid var(--border);
+    color: var(--text); background: transparent;
+  }
+  .price-cta.outline:hover { border-color: var(--blue); color: var(--blue); }
+  .price-cta.solid {
+    background: var(--blue); color: white; border: none;
+    box-shadow: 0 4px 20px rgba(14,165,233,0.25);
+  }
+  .price-cta.solid:hover { background: var(--blue-dark); box-shadow: 0 6px 28px rgba(14,165,233,0.35); }
+
+  /* TESTIMONIALS */
+  .testimonials { background: var(--surface); }
+  .testi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px; margin-top: 56px;
+  }
+  .testi-card {
+    padding: 28px;
+    background: var(--white); border-radius: 16px;
+    border: 1px solid var(--border);
+    transition: all 0.3s;
+  }
+  .testi-card:hover {
+    border-color: rgba(14,165,233,0.2);
+    box-shadow: 0 6px 24px rgba(14,165,233,0.06);
+  }
+  .testi-stars {
+    display: flex; gap: 3px; margin-bottom: 16px;
+  }
+  .star { color: #FFC107; font-size: 0.9rem; }
+  .testi-text {
+    font-size: 0.925rem; color: var(--text);
+    line-height: 1.7; margin-bottom: 20px;
+    font-style: italic;
+  }
+  .testi-author { display: flex; align-items: center; gap: 12px; }
+  .author-avatar {
+    width: 38px; height: 38px; border-radius: 50%;
+    background: rgba(14,165,233,0.1);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.8rem; font-weight: 700; color: var(--blue);
+    flex-shrink: 0;
+  }
+  .author-name { font-size: 0.875rem; font-weight: 600; color: var(--text); }
+  .author-role { font-size: 0.775rem; color: var(--text-light); }
+
+  /* CTA BANNER */
+  .cta-section {
+    padding: 96px 5%;
+    background: var(--ink);
+    text-align: center; position: relative; overflow: hidden;
+  }
+  .cta-glow {
+    position: absolute;
+    width: 700px; height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(14,165,233,0.15) 0%, transparent 65%);
+    top: 50%; left: 50%; transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+  .cta-section .grid-bg {
+    background-image:
+      linear-gradient(rgba(14,165,233,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(14,165,233,0.05) 1px, transparent 1px);
+    background-size: 60px 60px;
+    position: absolute; inset: 0; pointer-events: none;
+  }
+  .cta-inner { position: relative; z-index: 1; }
+  .cta-section .section-label { color: #38BDF8; }
+  .cta-section .section-title { color: white; max-width: 700px; margin: 0 auto 16px; }
+  .cta-section .section-sub { color: rgba(255,255,255,0.5); max-width: 500px; margin: 0 auto 40px; }
+  .cta-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+  /* FOOTER */
+  footer {
+    background: var(--ink-soft);
+    color: rgba(255,255,255,0.5);
+    padding: 56px 5% 32px;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 48px; margin-bottom: 48px;
+  }
+  .footer-brand p { font-size: 0.875rem; line-height: 1.7; margin-top: 16px; max-width: 280px; }
+  .footer-logo {
+    display: flex; align-items: center; gap: 10px;
+    color: white; font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700; font-size: 1.1rem;
+  }
+  .footer-col h4 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.8rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 16px;
+  }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .footer-col a { color: rgba(255,255,255,0.45); text-decoration: none; font-size: 0.875rem; transition: color 0.2s; }
+  .footer-col a:hover { color: var(--blue); }
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.07);
+    padding-top: 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 16px;
+  }
+  .footer-bottom span { font-size: 0.8rem; }
+
+  /* ANIMATIONS */
+  .reveal {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+
+  @media (max-width: 768px) {
+    .bento { grid-template-columns: 1fr; }
+    .bento-card.wide, .bento-card.tall { grid-column: 1; grid-row: span 1; }
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+    .nav-links { display: none; }
+    .steps-row { grid-template-columns: 1fr; }
+    .hero-stats { gap: 24px; }
+    .stat-divider { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">
+    <div class="logo-mark">P</div>
+    Prosons CRM
+  </a>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#modules">Modules</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#testimonials">Reviews</a></li>
+  </ul>
+  <div class="nav-cta">
+    <a href="#" class="btn-ghost">Sign in</a>
+    <a href="#" class="btn-primary">Start free →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg grid-bg"></div>
+  <canvas id="particles"></canvas>
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <div class="hero-badge">
+      <div class="hero-badge-dot"></div>
+      Built for modern law firms
+    </div>
+    <h1 class="display">
+      Legal work,<br>
+      <em>automated at scale.</em>
+    </h1>
+    <p class="hero-sub">
+      Prosons CRM streamlines every layer of your firm — from client intake to billing compliance — so your lawyers can focus on winning cases, not managing paperwork.
+    </p>
+    <div class="hero-actions">
+      <a href="#" class="btn-hero">
+        Get started free
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="#features" class="btn-hero-outline">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M10 8l6 4-6 4V8z" fill="currentColor" stroke="none"/></svg>
+        See how it works
+      </a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num">87<span>%</span></div>
+        <div class="stat-label">Reduction in admin time</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <div class="stat-num">3<span>×</span></div>
+        <div class="stat-label">Faster client onboarding</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <div class="stat-num">500<span>+</span></div>
+        <div class="stat-label">Law firms worldwide</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <div class="stat-num">$2.4<span>M</span></div>
+        <div class="stat-label">Avg. annual revenue recovered</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="trust-bar-inner">
+    <span class="trust-label">Trusted by leading firms</span>
+    <div style="width:1px;height:20px;background:var(--border);margin:0 20px;"></div>
+    <div class="trust-firms">
+      <span class="firm-name">Adeola & Partners</span>
+      <span class="firm-name">Sterling Law Group</span>
+      <span class="firm-name">Nexus Legal</span>
+      <span class="firm-name">Meridian Advocates</span>
+      <span class="firm-name">Okafor Associates</span>
+      <span class="firm-name">Vantage Solicitors</span>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="features-header reveal">
+    <span class="section-label">Core capabilities</span>
+    <h2 class="section-title">Everything your firm needs in one platform</h2>
+    <p class="section-sub">Five integrated automation modules designed specifically for the way legal teams actually work.</p>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card reveal reveal-delay-1">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
+      </div>
+      <h3>Contract Drafting & Review</h3>
+      <p>Generate legally sound contracts from templates in seconds. AI flags risk clauses, inconsistencies, and missing provisions before a human ever reads it.</p>
+      <span class="feature-tag">AI-Powered</span>
+    </div>
+    <div class="feature-card reveal reveal-delay-2">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </div>
+      <h3>Client Intake & Case Management</h3>
+      <p>Digital intake forms, conflict checks, and automatic case file creation. Every new matter is logged, categorised, and assigned without manual input.</p>
+      <span class="feature-tag">Fully Automated</span>
+    </div>
+    <div class="feature-card reveal reveal-delay-3">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      </div>
+      <h3>Document Automation & e-Signatures</h3>
+      <p>Build a library of smart document templates with conditional logic. Send for signature in one click — tracked, legally binding, and filed automatically.</p>
+      <span class="feature-tag">Integrated Signing</span>
+    </div>
+    <div class="feature-card reveal reveal-delay-1">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      </div>
+      <h3>Billing & Invoice Automation</h3>
+      <p>Time tracking, disbursement capture, and invoice generation all in one flow. Send payment-enabled invoices and reconcile automatically with your accounts.</p>
+      <span class="feature-tag">Revenue Recovery</span>
+    </div>
+    <div class="feature-card reveal reveal-delay-2">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <h3>Compliance & Regulatory Tracking</h3>
+      <p>Stay ahead of deadlines, regulatory filings, and compliance obligations. Prosons tracks court dates, limitation periods, and statutory notices automatically.</p>
+      <span class="feature-tag">Risk Management</span>
+    </div>
+    <div class="feature-card reveal reveal-delay-3">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg>
+      </div>
+      <h3>Analytics & Performance Insights</h3>
+      <p>Live dashboards show matter progress, team utilisation, billing targets, and client satisfaction — giving managing partners the visibility they need.</p>
+      <span class="feature-tag">Real-time Data</span>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="workflow" id="workflow">
+  <div class="grid-bg"></div>
+  <div class="workflow-inner">
+    <div class="reveal">
+      <span class="section-label">How it works</span>
+      <h2 class="section-title">From intake to close, in four steps</h2>
+      <p class="section-sub">Prosons maps to your existing process and automates each handoff — no process redesign required.</p>
+    </div>
+    <div class="steps-row">
+      <div class="step reveal reveal-delay-1">
+        <div class="step-num">01</div>
+        <h3>Client Onboards</h3>
+        <p>A prospective client fills in a digital intake form. Prosons runs a conflict check, creates the matter file, and notifies the assigned lawyer instantly.</p>
+      </div>
+      <div class="step reveal reveal-delay-2">
+        <div class="step-num">02</div>
+        <h3>Documents Generated</h3>
+        <p>Engagement letters, fee agreements, and initial advice templates are drafted and sent for e-signature — all within minutes of conflict clearance.</p>
+      </div>
+      <div class="step reveal reveal-delay-3">
+        <div class="step-num">03</div>
+        <h3>Work Progresses</h3>
+        <p>Time is logged automatically, deadlines are tracked, and every document filed to the matter. The team sees one unified timeline.</p>
+      </div>
+      <div class="step reveal reveal-delay-1">
+        <div class="step-num">04</div>
+        <h3>Billed & Closed</h3>
+        <p>Invoice is generated, payment link sent, funds reconciled, and the matter archived — with a client satisfaction survey triggered on close.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODULES BENTO -->
+<section class="modules" id="modules">
+  <div class="reveal">
+    <span class="section-label">Platform modules</span>
+    <h2 class="section-title">One platform. Every corner of your practice.</h2>
+    <p class="section-sub">Modular by design — use what you need, scale as you grow.</p>
+  </div>
+  <div class="bento">
+    <div class="bento-card wide reveal">
+      <div class="bento-label">Contract Intelligence</div>
+      <h3>Review contracts 10× faster</h3>
+      <p>AI scans every uploaded contract against your firm's risk playbook, highlights non-standard clauses, and proposes alternative language — reducing manual review time from hours to minutes.</p>
+      <div class="bento-visual">
+        <div class="mini-doc">
+          <div class="mini-line full"></div>
+          <div class="mini-line highlight"></div>
+          <div class="mini-line med"></div>
+          <div class="mini-line full"></div>
+          <div class="mini-line short"></div>
+          <div class="mini-status">
+            <div class="status-dot"></div>
+            <span class="status-text">2 risk clauses flagged · 1 missing provision detected</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="bento-card feature-accent reveal reveal-delay-1">
+      <div class="bento-label">Billing Automation</div>
+      <h3>Stop losing billable hours</h3>
+      <p>Automatic time capture, disbursement logging, and one-click invoice generation. Firms recover an average of $2.4M in unbilled time annually.</p>
+    </div>
+    <div class="bento-card tall reveal reveal-delay-2">
+      <div class="bento-label">Practice Analytics</div>
+      <h3>Know your numbers</h3>
+      <p>Real-time visibility into matter progress, utilisation rates, and realization — across every team and practice area.</p>
+      <div class="bento-visual" style="padding:16px;">
+        <div class="mini-metric"><span class="metric-name">Utilisation rate</span><span class="metric-val" style="color:var(--blue);">94%</span></div>
+        <div class="mini-metric"><span class="metric-name">Matters open</span><span class="metric-val">248</span></div>
+        <div class="mini-metric"><span class="metric-name">Invoices collected</span><span class="metric-val">₦ 18.4M</span></div>
+        <div class="mini-metric"><span class="metric-name">Client NPS</span><span class="metric-val" style="color:#22C55E;">82</span></div>
+        <div class="mini-metric"><span class="metric-name">Compliance score</span><span class="metric-val">100%</span></div>
+      </div>
+    </div>
+    <div class="bento-card reveal reveal-delay-1">
+      <div class="bento-label">e-Signatures</div>
+      <h3>Sign from anywhere</h3>
+      <p>Clients and counterparties sign on any device. Every signature is timestamped, court-admissible, and auto-filed to the matter record.</p>
+    </div>
+    <div class="bento-card reveal reveal-delay-2">
+      <div class="bento-label">Compliance Engine</div>
+      <h3>Never miss a deadline</h3>
+      <p>Statutes of limitation, regulatory filings, and court deadlines are tracked automatically with layered reminders.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials" id="testimonials">
+  <div class="reveal" style="text-align:center; max-width:560px; margin: 0 auto;">
+    <span class="section-label">Client reviews</span>
+    <h2 class="section-title">Firms that chose to automate</h2>
+    <p class="section-sub">What managing partners say after their first 90 days on Prosons.</p>
+  </div>
+  <div class="testi-grid">
+    <div class="testi-card reveal reveal-delay-1">
+      <div class="testi-stars">
+        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+      </div>
+      <p class="testi-text">"We cut our document turnaround from 3 days to under 4 hours. Our associates now spend their time on actual legal work, not chasing signatures."</p>
+      <div class="testi-author">
+        <div class="author-avatar">CN</div>
+        <div>
+          <div class="author-name">Chidi Nwachukwu</div>
+          <div class="author-role">Managing Partner, Nexus Legal</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card reveal reveal-delay-2">
+      <div class="testi-stars">
+        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+      </div>
+      <p class="testi-text">"The billing module alone paid for the entire subscription in the first month. We recovered £180K in time we'd previously written off as 'unbillable'."</p>
+      <div class="testi-author">
+        <div class="author-avatar">FS</div>
+        <div>
+          <div class="author-name">Fiona Sutherland</div>
+          <div class="author-role">Finance Director, Sterling Law Group</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card reveal reveal-delay-3">
+      <div class="testi-stars">
+        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+      </div>
+      <p class="testi-text">"Prosons handles our entire conflict-check and intake process. What used to take two members of staff a full day now runs automatically before 9am."</p>
+      <div class="testi-author">
+        <div class="author-avatar">AO</div>
+        <div>
+          <div class="author-name">Adaeze Okafor</div>
+          <div class="author-role">Senior Partner, Okafor Associates</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+  <div class="reveal" style="text-align:center; max-width:560px; margin: 0 auto;">
+    <span class="section-label">Pricing</span>
+    <h2 class="section-title">Straightforward pricing, no surprises</h2>
+    <p class="section-sub">Every plan includes onboarding support, data migration, and unlimited storage for matter documents.</p>
+  </div>
+  <div class="pricing-grid">
+    <div class="price-card reveal reveal-delay-1">
+      <div class="price-tier">Starter</div>
+      <div class="price-amount"><sup>$</sup>299</div>
+      <div class="price-period">per month · up to 5 users</div>
+      <p class="price-desc">For boutique firms and solo practitioners getting started with legal automation.</p>
+      <div class="price-divider"></div>
+      <ul class="price-features">
+        <li>
+          <svg class="check-icon" viewBox="0 0 16 16" fill="none" stroke="var(--blue)" stroke-width="2"><polyline points="3,8 6,11 13,5"/></svg>
+          Client intake & conflict check
+        </li>
+        <li>
+          <svg class="check-icon" viewBox="0 0 16 16" fill="none" stroke="var(--blue)" stroke-width="2"><polyline points="3,8 6,11 13,5"/></svg>
+          Document templates (up to 20)
+        </li>
+        <li>
+          <svg class="check-icon" viewBox="0 0 16 16" fill="none" stroke="var(--blue)" stroke-width="2"><polyline points="3,8 6,11 13,5"/></svg>
+          e-Signature (50 docs/month)
+        </li>
+        <li>
+          <svg class="check-icon" viewBox="0 0 16 16" fill="none" stroke="var(--blue)" stroke-width="2"><polyline points="3,8 6,11 13,5"/></svg>
+          Basic billing & invoicing
+        </li>
+        <li>
+          <svg class="check-icon" viewBox="0 0 16 16" fill="none" stroke="var(--blue)" stroke-width="2"><polyline points="3,8 6,11 13,5"/></svg>
+          Email support
+        </li>
+      </ul>
+      <a href="#" class="price-cta outline">Get started</a>
+    </div>
+    <div class="price-card popular reveal reveal-delay-2">
+      <div class="popular-badge">Most popular</div>
+      <div class="price-tier">Growth</div>
+      <div class="price-amount"><sup>$</sup>799</div>
+      <div class="price-period">per month · up to 25 users</div>
+      <p class="price-desc">For mid-size firms ready to automate across every practice area and recover maximum revenue.</p>
+      <div class="price-divider"></div>
+      <ul class="price-features">
+        <li>
+          <svg class="check-icon" viewBox="0 0 16 16" fill="none" stroke="var(--blue)" stroke-width="2"><polyline points="3,8 6,11 13,5"/></svg>
+          Everything in Starter
+        </li>
+        <li>
+          <svg class="check-icon" viewBox="0 0 16 16" fill="none" stroke="var(--blue)" stroke-width="2"><polyline points="3,8 6,11 13,5"/></svg>
+          AI contract review & risk flagging
+        </li>
+        <li>
+          <svg class="check-icon" viewBox="0 0 16 16" fill="none" stroke="var(--blue)" stroke-width="2"><polyline points="3,8 6,11 13,5"/></svg>
+          Unlimited document templates
+        </li>
+        <li>
+          <svg class="check-icon" viewBox="0 0 16 16" fill="none" stroke="var(--blue)" stroke-width="2"><polyline points="3,8 6,11 13,5"/></svg>
+          Full compliance & deadline engine
+        </li>
+        <li>
+          <svg class="check-icon" viewBox="0 0 16 16" fill="none" stroke="var(--blue)" stroke-width="2"><polyline points="3,8 6,11 13,5"/></svg>
+          Advanced analytics dashboard
+        </li>
+        <li>
+          <svg class="check-icon" viewBox="0 0 16 16" fill="none" stroke="var(--blue)" stroke-width="2"><polyline points="3,8 6,11 13,5"/></svg>
+          Priority phone & chat support
+        </li>
+      </ul>
+      <a href="#" class="price-cta solid">Get started</a>
+    </div>
+    <div class="price-card reveal reveal-delay-3">
+      <div class="price-tier">Enterprise</div>
+      <div class="price-amount" style="font-size:2rem; padding-top:6px;">Custom</div>
+      <div class="price-period">bespoke · unlimited users</div>
+      <p class="price-desc">For large firms and legal departments that need white-glove implementation, SSO, and custom integrations.</p>
+      <div class="price-divider"></div>
+      <ul class="price-features">
+        <li>
+          <svg class="check-icon" viewBox="0 0 16 16" fill="none" stroke="var(--blue)" stroke-width="2"><polyline points="3,8 6,11 13,5"/></svg>
+          Everything in Growth
+        </li>
+        <li>
+          <svg class="check-icon" viewBox="0 0 16 16" fill="none" stroke="var(--blue)" stroke-width="2"><polyline points="3,8 6,11 13,5"/></svg>
+          Single sign-on (SSO/SAML)
+        </li>
+        <li>
+          <svg class="check-icon" viewBox="0 0 16 16" fill="none" stroke="var(--blue)" stroke-width="2"><polyline points="3,8 6,11 13,5"/></svg>
+          Custom integrations (PMS, SaaS)
+        </li>
+        <li>
+          <svg class="check-icon" viewBox="0 0 16 16" fill="none" stroke="var(--blue)" stroke-width="2"><polyline points="3,8 6,11 13,5"/></svg>
+          Dedicated customer success manager
+        </li>
+        <li>
+          <svg class="check-icon" viewBox="0 0 16 16" fill="none" stroke="var(--blue)" stroke-width="2"><polyline points="3,8 6,11 13,5"/></svg>
+          SLA guarantee & uptime commitment
+        </li>
+      </ul>
+      <a href="#" class="price-cta outline">Talk to sales →</a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA SECTION -->
+<section class="cta-section">
+  <div class="grid-bg"></div>
+  <div class="cta-glow"></div>
+  <div class="cta-inner reveal">
+    <span class="section-label">Ready to automate?</span>
+    <h2 class="section-title">Your firm's most productive era starts now</h2>
+    <p class="section-sub">Set up takes under 48 hours. No disruption. No downtime. Just less time on admin, and more time on law.</p>
+    <div class="cta-buttons">
+      <a href="#" class="btn-hero">Start your free trial →</a>
+      <a href="#" class="btn-hero-outline" style="color:rgba(255,255,255,0.8); border-color:rgba(255,255,255,0.2);">Book a demo</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="footer-logo">
+        <div class="logo-mark">P</div>
+        Prosons CRM
+      </div>
+      <p>Legal automation built for firms that want to scale without scaling their headcount. Trusted by 500+ law firms across Africa, the UK, and North America.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Product</h4>
+      <ul>
+        <li><a href="#">Features</a></li>
+        <li><a href="#">Modules</a></li>
+        <li><a href="#">Pricing</a></li>
+        <li><a href="#">Changelog</a></li>
+        <li><a href="#">Roadmap</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Press</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#">Data Processing</a></li>
+        <li><a href="#">Security</a></li>
+        <li><a href="#">Compliance</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Prosons CRM. All rights reserved.</span>
+    <span style="color:rgba(255,255,255,0.3);">Built for the firms that move fastest.</span>
+  </div>
+</footer>
+
+<script>
+// Particles
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+let W, H, particles = [];
+
+function resize() {
+  W = canvas.width = canvas.offsetWidth;
+  H = canvas.height = canvas.offsetHeight;
+}
+resize(); window.addEventListener('resize', resize);
+
+for (let i = 0; i < 60; i++) {
+  particles.push({
+    x: Math.random() * 1400, y: Math.random() * 900,
+    vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3,
+    r: Math.random() * 2 + 0.5, o: Math.random() * 0.4 + 0.1
+  });
+}
+
+function drawParticles() {
+  ctx.clearRect(0, 0, W, H);
+  for (let p of particles) {
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(14,165,233,${p.o})`;
+    ctx.fill();
+    p.x += p.vx; p.y += p.vy;
+    if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+    if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
+  }
+  // Draw connections
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if (dist < 120) {
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.strokeStyle = `rgba(14,165,233,${0.08 * (1 - dist/120)})`;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      }
+    }
+  }
+  requestAnimationFrame(drawParticles);
+}
+drawParticles();
+
+// Nav scroll
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 40);
+});
+
+// Reveal on scroll
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
